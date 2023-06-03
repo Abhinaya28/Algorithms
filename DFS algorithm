@@ -1,0 +1,74 @@
+al={0:[1,4],1:[0,2,3,6],2:[1,3,4,5],3:[1,2,5,6],4:[0,2],5:[2,3,5],6:[1,3],7:[8,9],8:[7],9:[7]}
+initial_vertex=int(intput("Intial vertex")
+import networkx as nx
+import sys
+H = nx.Graph()
+for i in al:
+    for j in al[i]:
+        H.add_edge(i,j)
+nx.draw(H, with_labels=True)
+w=[] #list of white vertices(non visited)
+g=[] # list of grey(visited) vertices, who has a whote neighbour
+b=[] # list of visited vertices
+d={} #discovery time of vertices
+f={} #finishing time of vertices
+p={} #parents of vertices
+
+n=len(al)
+t=1
+for i in range(0,n):
+    w.append(i)
+    p[i]='NIL'
+print('w',w)
+print('p',p)
+g.append(0)
+w.remove(0)
+d[0]=t
+def DFS(al,u,g,w,b,t):
+    print("\n start DFS -",u)
+    print("Adj list of %s is %s"%(u,al[u]))
+    for nbr in al[u]:
+        print('Tracing nbr',nbr)
+        if nbr in w:
+            g.append(nbr)
+            last = len(g)-1
+            w.remove(nbr)
+            p[nbr]=u
+            t=t+1
+            d[nbr]=t
+            print("p",p)
+            print("g",g)
+            print("w",w)
+            print("d",d)
+            print("t",t)
+            print("b",b)
+            DFS(al,g[last],g,w,b,t)
+        else:
+            print(nbr," has no white nbrs")
+            continue
+    print("\n Root %s has no white neighbours, so add to black"%u)
+    b.append(u)
+    print("b",b)
+    g.remove(u)
+    print("g",g)
+    t=t+1
+    f[u]=t
+    print("d",d)
+    print("f",f)
+    print("w",w)
+    print("p",p)
+    if len(g)==0:
+        if len(w)!=0:
+            print("\n New component found")
+            first=w[0]
+            t=t+1
+            d[first]=t
+            g.append(first)
+            w.remove(first)
+            DFS(al,first,g,w,b,t)
+        else:
+            sys.exit("DFS COMPLETE")
+    last = len(g)-1
+    #print(g[last])
+    DFS(al,g[last],g,w,b,t)
+DFS(al,w[initial_vertex],g,w,b,t)
