@@ -19,8 +19,7 @@ t=1
 for i in range(0,n):
     w.append(i)
     p[i]='NIL'
-print('w',w)
-print('p',p)
+
 g.append(0)
 w.remove(0)
 d[0]=t
@@ -36,12 +35,7 @@ def DFS(al,u,g,w,b,t):
             p[nbr]=u
             t=t+1
             d[nbr]=t
-            print("p",p)
-            print("g",g)
-            print("w",w)
-            print("d",d)
-            print("t",t)
-            print("b",b)
+
             DFS(al,g[last],g,w,b,t)
         else:
             print(nbr," has no white nbrs")
